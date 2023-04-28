@@ -4,8 +4,6 @@ name: Running Tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   Test:
@@ -41,12 +39,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: migrate database
-        run: prisma migrate dev --preview-feature
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Set up database
+        run: npx prisma db push --preview-feature
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
 
       - name: Run tests
-        run: npm test
+        run: npm run test:e2e
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
