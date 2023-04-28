@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["darwin-arm64", "native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String       @id @db.Uuid
+  UserCoupon UserCoupon[]
+}
+
+model Coupon {
+  id             String       @id @db.Uuid
+  quantity       Int?
+  start_date     DateTime
+  end_date       DateTime
+  valid_period   Int
+  discount_type  String
+  discount_value Int
+  UserCoupon     UserCoupon[]
+}
+
+model UserCoupon {
+  id              String    @id @db.Uuid
+  issued_date     DateTime
+  expiration_date DateTime
+  used            Boolean   @default(false)
+  used_date       DateTime?
+  coupon          Coupon    @relation(fields: [couponId], references: [id])
+  user            User      @relation(fields: [userId], references: [id])
+  couponId        String    @db.Uuid
+  userId          String    @db.Uuid
+}
