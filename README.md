@@ -7,7 +7,6 @@ E-Commerce
 - Node.js ^16.13.1
 - Docker ^20.10.8
 - Prisma ^3.4.1
-- PostgreSQL ^13.4
 
 ### Installation
 1. Clone the repo
